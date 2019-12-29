@@ -626,4 +626,45 @@ const ly = leyou = {
      * 将请求参数字符串格式化为js对象
      */
     parse,
+
+    plusCart(cart) {
+        //获取购物车
+        let carts = JSON.parse(localStorage.getItem("carts"))
+
+        //存在该商品
+        for (let c of carts) {
+            if (c.skuId == cart.skuId) {
+                c.num += 1
+                localStorage.setItem("carts",JSON.stringify(carts))
+                return
+            }
+        }
+
+        //不存在该商品
+        carts.push(cart)
+        localStorage.setItem("carts",JSON.stringify(carts))
+    },
+    minsCart(cart) {
+        //获取购物车
+        let carts = JSON.parse(localStorage.getItem("carts"))
+
+        //获取该商品
+        for (let i = 0; i < carts.length; i++) {
+            let c = carts[i]
+            if (c.skuId == cart.skuId) {
+                //数量为一
+                if (c.num == 1) {
+                    carts.splice(i, 1)
+                    localStorage.setItem("carts", JSON.stringify(carts))
+                    return
+                }
+
+                //数量不为一
+                c.num -= 1
+                localStorage.setItem("carts", JSON.stringify(carts))
+                return
+            }
+        }
+
+    }
 }
